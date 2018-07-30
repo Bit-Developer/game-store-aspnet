@@ -18,4 +18,4 @@ git clone https://github.com/jojozhuang/game-store-aspnet.git
 On Windows, open the project in Visual Studio, compile and run. Access http://localhost:5000/ in web browser, enjoy!
 
 # Portfolio
-Read portfolio [Online Game Store(ASP.NET)](http://jojozhuang.github.io/portfolio/game-store-aspnet/) to learn the main functions of this text compare tool.
+Read portfolio [Online Game Store(ASP.NET)](http://jojozhuang.github.io/portfolio/game-store-aspnet/) to learn the main functions of this online store application.
