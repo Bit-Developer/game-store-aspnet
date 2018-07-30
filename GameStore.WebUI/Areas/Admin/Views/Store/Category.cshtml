@@ -1,0 +1,165 @@
+﻿@model GameStore.WebUI.Areas.Admin.Models.CategoryViewModel
+@{
+    ViewBag.Title = "Category Management";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#AddModal">Add Category</button>
+<hr />
+<table class="table table-striped" id="modelList">
+    <thead>
+        <tr>
+            <th>Category Id</th>
+            <th>Category Name</th>
+            <th>Operations</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div id="AddModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+    @using (Ajax.BeginForm("", "api/Category/Create", new { area = "" }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "onSuccess", OnFailure = "onFailure" }))
+    {
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add New Category</h4>
+            </div>
+            <div class="modal-body">                
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                <fieldset class="form-group">
+                    <label for="CategoryName">Category Name</label>
+                    @Html.TextBoxFor(c => c.CategoryName, new { @class = "form-control" })
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    }
+    </div>
+</div>
+
+<div id="EditModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+    @using (Ajax.BeginForm("", "api/Category/", new { area = "" }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "onSuccess", OnFailure = "onFailure" }))
+    {
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Category</h4>
+            </div>
+            <div class="modal-body">               
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                @Html.HiddenFor(c => c.CategoryId)
+                <fieldset class="form-group">
+                    <label for="CategoryName">Category Name</label>
+                    @Html.TextBoxFor(c => c.CategoryName, new { @class = "form-control" })
+                </fieldset>                
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary pull-left">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $().ready(function () {
+            //Load Categories when the page is loaded
+            loadList();
+
+            $('#AddModal').on('show.bs.modal', function () {
+                $('#AddModal').find('#CategoryName').val("");
+                clearMessage();
+            })
+            //Add a function to reload the list when the dialog closes
+            $('#AddModal').on('hidden.bs.modal', function () {
+                loadList();
+            })
+
+            $('#EditModal').on('show.bs.modal', function () {
+                clearMessage();
+            })
+
+            $('#EditModal').on('hidden.bs.modal', function () {
+                loadList();
+            })
+        });
+
+        //Make an ajax call to load the categories
+        function loadList() {
+            $("#modelList").find('tbody').empty();
+            $.getJSON("/api/Category/", function (data) {
+                $.each(data, function (i, category) {
+                    $('#modelList tbody').append("<tr><td>" + category.CategoryId + "</td><td>" + category.CategoryName + "</td><td><span><a class='btn btn-success' href='javascript:editModel(\"" + category.CategoryId + "\");'> Edit</a></span><span style='padding-left: 5px'><a class='btn btn-danger' href='javascript:deleteModel(\"" + category.CategoryId + "\");'> Delete</a></span></td></tr>");
+                });
+            });
+        }
+
+        //Make an ajax call to delete a model object
+        function deleteModel(id) {
+            var result = confirm("Are you sure to delete?");
+            if (result) {
+                $.ajax({
+                    url: '/api/Category/' + id,
+                    type: 'DELETE',
+                    success: function (result) {
+                        if (result == "Okay") {
+                            loadList();
+                        } else {
+                            alert(result);
+                        }
+                    },
+                    error: function (result) {
+                        alert("Unable to delete category. Error:" + result);
+                    }
+                });
+            }
+        }
+
+        function editModel(id) {
+            $.ajax({
+                url: '/api/Category/' + id,
+                type: 'GET',
+                success: function (result) {
+                    $('#EditModal').find('#CategoryId').val(result.CategoryId);
+                    $('#EditModal').find('#CategoryName').val(result.CategoryName);
+                    $('#EditModal').modal('show');
+                },
+                error: function (result) {
+                    alert("Unable to edit category.")
+                }
+            });
+        }
+
+        function onSuccess(data) {
+            if (data == "Okay") {
+                $('#AddModal').modal('hide');
+                $('#EditModal').modal('hide');                
+            } else {
+                clearMessage();
+                $('.text-danger ul').append("<li>" + data + "</li>")
+            }
+        }
+
+        function clearMessage() {            
+            $(".text-danger").addClass("validation-summary-errors");
+            $(".text-danger").removeClass("validation-summary-valid");
+            $('.text-danger ul').children().remove();
+        }
+
+        function onFailure(data) {
+            alert('An error occurred, please try again.');
+            //alert('Error:' + data.responseText);
+        }
+    </script>
+}
+

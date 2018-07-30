@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "Admin: Dashboard";
+}
+
+<h2>Game Store Management</h2>
+<div class="row">
+    <div class="col-md-4">
+        <ul class="list-group">
+            <li class="list-group-item"><b>Statistics</b></li>
+            <li class="list-group-item"><span class="badge" id="user">0</span>@Html.ActionLink("Users", "AppUser", "Account", new { area = "Admin" }, new { @class = "btn btn-primary" })</li>
+            <li class="list-group-item"><span class="badge" id="role">0</span>@Html.ActionLink("Roles", "AppRole", "Account", new { area = "Admin" }, new { @class = "btn btn-primary" })</li>
+            <li class="list-group-item"><span class="badge" id="product">0</span>@Html.ActionLink("Products", "Product", "Store", new { area = "Admin" }, new { @class = "btn btn-primary" })</li>
+            <li class="list-group-item"><span class="badge" id="category">0</span>@Html.ActionLink("Categories", "Category", "Store", new { area = "Admin" }, new { @class = "btn btn-primary" })</li>
+            <li class="list-group-item"><span class="badge" id="order">0</span>@Html.ActionLink("Orders", "Order", "Store", new { area = "Admin" }, new { @class = "btn btn-primary" })</li>
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <ul class="list-group">
+            <li class="list-group-item"><b>System</b></li>
+            <li class="list-group-item"><span class="badge" id="user"></span>@Html.ActionLink("Clear Cache", "ClearCache", "Dashboard", new { area = "Admin" }, new { @class = "btn btn-primary"})</li>
+        </ul>        
+    </div>
+    <div class="col-md-4"></div>
+</div>
+@section Scripts
+{
+    <script>
+        $().ready(function () {
+            getUserCount();
+            getRoleCount();
+            getProductCount();
+            getCategoryCount();
+            getOrderCount();
+        });
+
+        function getUserCount() {
+            $.ajax({
+                url: '/api/User/GetCount/',
+                type: 'GET',
+                success: function (result) {
+                    $('#user').text(result);
+                },
+                error: function (result) {
+                    //alert("Error:" + result);
+                }
+            });
+        }
+
+        function getRoleCount() {
+            $.ajax({
+                url: '/api/Role/GetCount/',
+                type: 'GET',
+                success: function (result) {
+                    $('#role').text(result);
+                },
+                error: function (result) {
+                    //alert("Error:" + result);
+                }
+            });
+        }
+
+        function getProductCount() {
+            $.ajax({
+                url: '/api/Product/GetCount/',
+                type: 'GET',
+                success: function (result) {
+                    $('#product').text(result);
+                },
+                error: function (result) {
+                    //alert("Error:" + result);
+                }
+            });
+        }
+
+        function getCategoryCount() {
+            $.ajax({
+                url: '/api/Category/GetCount/',
+                type: 'GET',
+                success: function (result) {
+                    $('#category').text(result);
+                },
+                error: function (result) {
+                    //alert("Error:" + result);
+                }
+            });
+        }
+
+        function getOrderCount() {
+            $.ajax({
+                url: '/api/Order/GetCount/',
+                type: 'GET',
+                success: function (result) {
+                    $('#order').text(result);
+                },
+                error: function (result) {
+                    //alert("Error:" + result);
+                }
+            });
+        }
+    </script>
+}

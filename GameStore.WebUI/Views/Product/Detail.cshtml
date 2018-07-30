@@ -1,0 +1,31 @@
+﻿@using GameStore.Extension;
+@model GameStore.WebUI.Areas.Admin.Models.DTO.ProductDTO
+@{
+    ViewBag.Title = "Product Detail";
+}
+@Html.Partial("_FrontPartial")
+@Html.HiddenFor(o=>o.ProductId)
+<div class="row" style="text-align:center;">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-3"><img src="~/images/@Model.Image" class="img-responsive" style="width:300px" alt="Image"></div>
+    <div class="col-sm-3">
+        <div>
+            <h2>@Model.ProductName <small><span class="label label-danger">@Model.CategoryName</span></small></h2>
+            <div class="special_item_price">
+                Price:
+                <span class="price-old">@Html.FormattedCurrency(Model.Price)</span><span class="price-new">@Html.FormattedCurrency(Model.GetDiscountedPrice())</span>
+            </div>
+            <div>Condition: @Model.Condition</div>
+            <div>
+                @using (Html.BeginForm("CreateOrUpdate", "ShoppingCart", FormMethod.Post))
+                {
+                    <input type='hidden' name='id' value='@Model.ProductId'>
+                    <input type='hidden' name='quantity' value='0'>
+                    <input type='submit' class='btn btn-warning' value='Add to Cart'>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3"></div>
+</div>
+

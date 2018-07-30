@@ -1,0 +1,51 @@
+﻿@model GameStore.WebUI.Models.CheckoutViewModel
+@{
+    ViewBag.Title = "Checkout";
+}
+@Html.Partial("_FrontPartial")
+<div class="box-body">
+    @using (Html.BeginForm("PlaceOrder", "ShoppingCart", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+    {
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10"><h3>Shipping Address</h3></div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.FullName, new { @class = "col-md-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(c => c.FullName, new { @class = "form-control", @placeholder = "Full Name" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.Address, new { @class = "col-md-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(c => c.Address, new { @class = "form-control", @placeholder = "Address" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.City, new { @class = "col-md-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(c => c.City, new { @class = "form-control", @placeholder = "City" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.State, new { @class = "col-md-2 control-label" })
+            <div class="col-sm-10">
+                @Html.DropDownList("State", new SelectList(ViewBag.States, "Key", "Name", Model.State), new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(c => c.Zip, new { @class = "col-md-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(c => c.Zip, new { @class = "form-control", @placeholder = "Zip" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                @Html.ActionLink("Back to Cart", "Index", new { controller = "ShoppingCart" }, new { @class="btn btn-danger" })
+                <input type="submit" style="padding-left:20px" class="btn btn-primary" value="Place Order" />
+            </div>
+        </div>
+    }
+</div>

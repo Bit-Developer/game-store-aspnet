@@ -1,0 +1,57 @@
+﻿@using GameStore.Extension;
+@model GameStore.WebUI.Models.ShoppingCart
+@{
+    ViewBag.Title = "My Cart";
+    double total = 0;
+}
+@Html.Partial("_FrontPartial")
+@if (Model.GetItems().Count == 0)
+{
+    <h3 class="box-title">Your cart is empty!</h3>
+}
+else
+{
+    <table class="table table-striped" id="modelList">
+        <thead>
+            <tr>
+                <th>Product Id</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Sub Total</th>
+                <th>Operations</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.GetItems())
+        {
+            <tr>
+                <td>@item.GetItemId()</td>
+                <td>@item.GetItemName()</td>
+                <td>@Html.FormattedCurrency(item.GetDiscountedPrice())</td>
+                <td>
+                    @using (Html.BeginForm("CreateOrUpdate", "ShoppingCart", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-inline" }))
+                    {
+                        <input type="hidden" name="id" value="@item.GetItemId()">
+                        <input type="text" name="quantity" size=3 value="@item.Quantity" class="form-control" >
+                        <input type="submit" class="btn btn-success" value="Update">
+                    }
+                </td>
+                <td>@Html.FormattedCurrency(item.GetTotalCost())</td>
+                <td>
+                    @using (Html.BeginForm("CreateOrUpdate", "ShoppingCart", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-horizontal" }))
+                    {
+                        <input type="hidden" name="id" value="@item.GetItemId()">
+                        <input type="hidden" name="quantity" size=3 value="-99">
+                        <input type="submit" class="btn btn-danger" onclick="return confirm('Are you sure to delete?')"  value="Delete">
+                    }
+                </td>
+            </tr>
+            { total = total + item.GetTotalCost(); }
+        }             
+        </tbody>
+        <tfoot>
+            <tr><td></td><td></td><td></td><td></td><td>@Html.FormattedCurrency(total)</td><td>@Html.ActionLink("Checkout", "Checkout", new { controller = "ShoppingCart" }, new { @class = "btn btn-primary" })</td></tr>
+        </tfoot>
+    </table>
+}

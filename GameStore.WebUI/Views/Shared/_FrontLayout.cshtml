@@ -1,0 +1,69 @@
+﻿@using GameStore.Extension
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Rong's Game Store</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/fancy")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .vcenter {
+            display: inline-block;
+            vertical-align: middle;
+            float: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <ul class="nav navbar-nav">
+                    <li class="@Html.IsSelected(actions: "Index", controllers: "Home")">@Html.ActionLink("Rong's Game Store", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</li>
+                </ul>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="@Html.IsSelected(actions: "Console", controllers: "Product")">@Html.ActionLink("Console", "Console", "Product", new { area = "" }, null)</li>
+                    <li class="@Html.IsSelected(actions: "Accessory", controllers: "Product")">@Html.ActionLink("Accessory", "Accessory", "Product", new { area = "" }, null)</li>
+                    <li class="@Html.IsSelected(actions: "Game", controllers: "Product")">@Html.ActionLink("Game", "Game", "Product", new { area = "" }, null)</li>                    
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="container-fluid">
+            <div class="col-sm-3 sidenav hidden-xs">
+                <h2>Logo</h2>
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="#section1">Dashboard</a></li>
+                    <li><a href="#section2">Age</a></li>
+                    <li><a href="#section3">Gender</a></li>
+                    <li><a href="#section3">Geo</a></li>
+                </ul><br>
+            </div>
+            <div class="col-sm-9">
+                @RenderBody()
+            </div>
+        </div>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Rong's Game Store</p>
+        </footer>
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

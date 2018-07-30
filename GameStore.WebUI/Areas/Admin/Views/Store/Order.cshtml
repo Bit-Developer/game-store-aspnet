@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "Order List";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr/>
+<table class="table table-striped" id="modelList">
+    <thead>
+        <tr>
+            <th>Order Id</th>
+            <th>User Name</th>
+            <th>Address</th>
+            <th>Confirmation Number</th>
+            <th>Delivery Date</th>
+            <th>Operations</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<!-- Modal -->
+<div id="itemsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Order Items</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped" id="itemList">
+                    <thead>
+                        <tr>
+                            <th>Item Id</th>
+                            <th>Product Id</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Discounted Price</th>
+                            <th>Quantity</th>
+                            <th>Condition</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $().ready(function () {
+            //Load Categories when the page is loaded
+            loadList();            
+        });
+
+        //Make an ajax call to load the categories
+        function loadList() {
+            $("#modelList").find('tbody').empty();
+            $.getJSON("/api/Order/", function (data) {
+                $.each(data, function (i, order) {
+                    $('#modelList tbody').append("<tr><td>" + order.OrderId + "</td><td>" + order.UserName + "</td><td>" + order.Address + "</td><td>" + order.ConfirmationNumber + "</td><td>" + order.DeliveryDate + "</td><td><span><a class='btn btn-info' href='javascript:detailModel(\"" + order.OrderId + "\");'> Items</a></span><span style='padding-left: 5px'><a class='btn btn-danger' href='javascript:deleteModel(\"" + order.OrderId + "\");'> Delete</a></span></td></tr>");
+                });
+            });
+        }
+
+        //Make an ajax call to delete a model object
+        function deleteModel(id) {
+            var result = confirm("Are you sure to delete?");
+            if (result) {
+                $.ajax({
+                    url: '/api/Order/' + id,
+                    type: 'DELETE',
+                    success: function (result) {
+                        if (result == "Okay") {
+                            loadList();
+                        } else {
+                            alert(result);
+                        }
+                    },
+                    error: function (result) {
+                        alert("Unable to delete order. Error:" + result);
+                    }
+                });
+            }
+        }
+
+        function detailModel(id) {
+            $("#itemList").find('tbody').empty();
+            $.ajax({
+                url: '/api/Order/GetOrderItems/' + id,
+                type: 'GET',
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        $('#itemList tbody').append("<tr><td>" + item.OrderItemId + "</td><td>" + item.ProductId + "</td><td>" + item.ProductName + "</td><td>" + item.CategoryName + "</td><td>" + formatter.format(item.Price * (100 - item.Discount) / 100) + "</td><td>" + item.Quantity + "</td><td>" + item.Condition + "</td></tr>");
+                    });                    
+                    $('#itemsModal').modal('show');
+                },
+                error: function (result) {
+                    alert("Unable to get items for this order.")
+                }
+            });
+        }
+
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+        });
+    </script>
+}
+

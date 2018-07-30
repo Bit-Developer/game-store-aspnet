@@ -1,0 +1,106 @@
+﻿@using GameStore.Extension;
+@model IEnumerable<GameStore.WebUI.Models.OrderViewModel>
+@{
+    ViewBag.Title = "My Orders";
+}
+@Html.Partial("_FrontPartial")
+
+@if (Model.Count() == 0)
+{
+    <h3 class="box-title">You have no order yet!</h3>
+}
+else
+{
+    foreach (var order in Model)
+    {
+        double total = 0;
+
+        <div class="panel panel-info">
+            <div class="panel-heading">Order Id: @order.OrderId</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="well well-sm">
+                            <div class="row">
+                                <div class="col-sm-5">User Name:</div>
+                                <div class="col-sm-7">@order.UserName</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-5">Confirmation Number:</div>
+                                <div class="col-sm-7">@order.ConfirmationNumber</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-5">Delivery Date:</div>
+                                <div class="col-sm-7">@order.DeliveryDate</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="well well-sm">
+                            <div class="row" style="margin-bottom:20px">
+                                <div class="col-sm-12"><span class="glyphicon glyphicon-plane"></span> Shipping Address</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Full Name:</div>
+                                <div class="col-sm-9">@order.FullName:</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Address:</div>
+                                <div class="col-sm-9">@order.Address</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">City:</div>
+                                <div class="col-sm-9">@order.City</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">State:</div>
+                                <div class="col-sm-9">@order.State</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">Zip:</div>
+                                <div class="col-sm-9">@order.Zip</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        @using (Html.BeginForm("CancelOrder", "MyOrder", FormMethod.Post, null))
+                        {
+                            <input type="hidden" name="id" value="@order.OrderId">
+                            <input type="submit" onclick="return confirm('Are you sure to delete?')" class="btn btn-danger" value="Cancel Order" />
+                        }
+                    </div>
+                </div>
+                <hr />
+                <div>                    
+                    <table class="table table-striped" id="modelList">
+                        <thead>
+                            <tr>
+                                <th>Product Id</th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Sub Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in order.Items)
+                            {
+                                <tr>
+                                    <td>@item.ProductId</td>
+                                    <td>@item.ProductName</td>
+                                    <td>@Html.FormattedCurrency(item.GetDiscountedPrice())</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@Html.FormattedCurrency(item.GetTotalCost())</td>
+                                </tr>
+                                total += item.GetTotalCost();
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr><td></td><td></td><td></td><td>Total:</td><td>@Html.FormattedCurrency(total)</td></tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>    
+    }
+}

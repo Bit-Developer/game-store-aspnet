@@ -1,0 +1,56 @@
+﻿<div class="row">
+    <div class="col-sm-4"><h2>@ViewBag.Title</h2></div>
+    <div class="col-sm-4" style="vertical-align:middle">
+        
+        <div class="header_search">
+            <form action="/Product/Search/" method="Post">
+                <input type="text" id="search" name="productname" value="" placeholder="search...">
+                <input type="submit" value="">
+            </form>
+        </div>
+            <!--
+        <div class="header_search">
+            <form action="/Product/Search/" method="Post" class="navbar-form navbar-right" role="search">
+                <div class="form-group input-group">
+                    <input type="text" id="search" name="productname" class="form-control" placeholder="Search Product..">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>-->
+    </div>
+    <div class="col-sm-4" style="text-align: right;">
+        <div class="header_cart">
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-8"><a href="/MyOrder"><span style="margin-right:20px">My Order(@Session["OrderCount"])</span></a><a href="/ShoppingCart"><span class="glyphicon glyphicon-shopping-cart"></span> Cart(@Session["CartCount"])</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<h3>@ViewBag.Message</h3>
+<hr />
+<script>
+$(document).ready(function() {
+    $(function() {
+        $("#search").autocomplete({
+            source : function(request, response) {
+                $.ajax({
+                    url: "/api/Product/GetAutoComplete/",
+                    type : "GET",
+                    data : {
+                        name : request.term
+                    },
+                    dataType : "json",
+                    success : function(data) {
+                        response(data);
+                    }
+                });
+            }
+        });
+    });
+});
+</script>

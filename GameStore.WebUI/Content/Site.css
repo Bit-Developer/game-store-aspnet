@@ -1,0 +1,141 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+h5 {
+    color:#ff4d4d;
+}
+
+.clear {
+	clear: both;
+}
+
+.header_cart{
+    margin-top:20px;
+}
+
+
+/*
+.header_search{
+    margin-top:15px;
+}
+.header_search form{
+	width:100%;
+}
+    */
+
+.header_search{
+	position: relative;
+	background: #f3f4f5;
+	border: 1px solid #D8D8D8;
+    margin-top:20px;
+    width:90%;
+}
+.header_search form{
+	width:100%;
+}
+
+.header_search input[type="text"]{
+	margin:0px 0;
+	font-family: 'Open Sans', sans-serif;
+	padding:8px 16px;
+	outline: none;
+	color: #5a5a5a;
+	background: none;
+	border: none;
+	width:95.33333%;
+	line-height: 1.5em;
+	position: relative;
+	font-size: 0.8725em;
+	-webkit-appearance: none;
+	text-transform: capitalize;
+}
+
+.header_search input[type="text"]{
+	background: #ffffff;
+}
+
+.header_search input[type="submit"]{
+	background: url('../images/search.png') no-repeat 0px 1px;
+	border: none;
+	cursor: pointer;
+	width: 24px;
+	outline: none;
+	position: absolute;
+	height: 24px;
+	top: 6px;
+	right: 5px;
+}
+
+.productitem img {
+	width: 180px;
+	height: 180px;
+      -webkit-transition-duration: 0.5s;
+  /* Webkit: Animation duration; */
+  -moz-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  width:100%;
+}
+.special_grid_col{
+	float: left;
+	width: 25%;
+	padding: 0.5em;
+	text-align:center;
+}
+.special_grid_col:hover .special_box{
+	/*border: 1px solid #f54d56;*/
+	transition: 1s all ease;
+	-webkit-transition: 0.5s all ease;
+	-moz-transition: 0.5s all ease;
+	-o-transition: 0.5s all ease;
+	-ms-transition: 0.5s all ease;
+}
+.special_grid_col:hover .special_box img{
+	-webkit-transform: scale(0.9);
+	/* Webkit: Scale up image to 1.2x original size; */
+	-moz-transform: scale(0.9);
+	-o-transform: scale(0.9);
+	opacity: 1;
+}
+
+.special_item_price {
+    padding-bottom: 20px;
+}
+
+.special_item_price .price-new {
+  color: #ff6978;
+  margin-right: 15px;
+  font-weight: 500;
+  font-size: 1.2em;
+}
+.special_item_price .price-old {
+  text-decoration: line-through;
+  color: green;
+  font-weight: normal;
+  font-size: 1.2em;
+  margin-right: 10px;
+}
+
+.order {
+    border: 1px solid #ffa64d;
+    padding: 10px;
+    margin-bottom:5px;
+}
+
+.header_cart a {
+    text-decoration:none;
+}

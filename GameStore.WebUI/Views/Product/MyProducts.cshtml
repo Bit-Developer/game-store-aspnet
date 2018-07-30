@@ -1,0 +1,238 @@
+﻿@model GameStore.WebUI.Areas.Admin.Models.ProductViewModel
+@{
+    ViewBag.Title = "My Products";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+    <div style="float:left; padding-left:15px">
+        <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#AddModal">Add Product</button>
+    </div>
+    <div style="float:right; padding-right:15px">
+        <form class="form-inline" role="form">
+            <div class="form-group">
+                <label for="categoryFilter">Category:</label>
+                @Html.DropDownListFor(o => o.CategoryId, new SelectList(ViewBag.CategoryFilter, "CategoryId", "CategoryName"), new { @id = "categoryFilter", @name = "categoryFilter", @class = "form-control" })
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<table class="table table-striped" id="modelList">
+    <thead>
+        <tr>
+            <th>Product Id</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th>Condition</th>
+            <th>Discount</th>
+            <th>Operations</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div id="AddModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+     @using (Ajax.BeginForm("", new { controller = "api/Product/Create" }, new AjaxOptions { HttpMethod = "Post", OnSuccess = "onSuccess", OnFailure = "onFailure" }, new { enctype = "multipart/form-data" }))
+     {
+         <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add New Product</h4>
+            </div>
+            <div class="modal-body">                
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                <fieldset class="form-group">
+                    @Html.LabelFor(p => p.ProductName)
+                    @Html.TextBoxFor(p => p.ProductName, new { @class = "form-control" })
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(p => p.CategoryId)
+                    @Html.DropDownListFor(o => o.CategoryId, new SelectList(ViewBag.Categories, "CategoryId", "CategoryName"), new { @class = "form-control" })
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(p => p.Price)
+                    @Html.TextBoxFor(p => p.Price, new { @class = "form-control" })
+                </fieldset>
+
+                <fieldset class="form-group">                    
+                    @Html.LabelFor(p => p.Image)
+                    @Html.TextBoxFor(p => p.Image, new { @class = "form-control" })                   
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(p => p.Condition)
+                    @Html.TextBoxFor(p => p.Condition, new { @class = "form-control" })
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(p => p.Discount)
+                    @Html.TextBoxFor(p => p.Discount, new { @class = "form-control" })
+                </fieldset>               
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+     }
+    </div>
+</div>
+
+<div id="EditModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+    @using (Ajax.BeginForm("", "api/Product/", new AjaxOptions { HttpMethod = "Post", OnSuccess = "onSuccess", OnFailure = "onFailure" }))
+    {
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Category</h4>
+            </div>
+            <div class="modal-body">               
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                @Html.HiddenFor(p => p.ProductId)
+                <fieldset class="form-group">
+                    @Html.LabelFor(p => p.ProductName)
+                    @Html.TextBoxFor(p => p.ProductName, new { @class = "form-control" })
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(p => p.CategoryId)
+                    @Html.DropDownListFor(o => o.CategoryId, new SelectList(ViewBag.Categories, "CategoryId", "CategoryName"), new { @class = "form-control" })
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(p => p.Price)
+                    @Html.TextBoxFor(p => p.Price, new { @class = "form-control" })
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(p => p.Image)
+                    @Html.TextBoxFor(p => p.Image, new { @class = "form-control" })
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(p => p.Condition)
+                    @Html.TextBoxFor(p => p.Condition, new { @class = "form-control" })
+                </fieldset>
+                <fieldset class="form-group">
+                    @Html.LabelFor(p => p.Discount)
+                    @Html.TextBoxFor(p => p.Discount, new { @class = "form-control" })
+                </fieldset>                            
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary pull-left">Update</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $().ready(function () {
+            //Load Categories when the page is loaded
+            loadList(0);
+
+            //Enable filter
+            $("#categoryFilter").on('change', function (e) {
+                loadList(this.value);
+            });
+
+            $('#AddModal').on('show.bs.modal', function () {
+                $('#AddModal').find('#ProductName').val('');
+                $('#AddModal').find('#CategoryId').val('');
+                $('#AddModal').find('#Price').val('');
+                $('#AddModal').find('#Image').val('');
+                $('#AddModal').find('#Condition').val('');
+                $('#AddModal').find('#Discount').val('');
+                clearMessage();
+            })
+
+            //Add a function to reload the list when the dialog closes
+            $('#AddModal').on('hidden.bs.modal', function () {
+                loadList($("#categoryFilter").val());
+            })
+
+            $('#EditModal').on('hidden.bs.modal', function () {
+                loadList($("#categoryFilter").val());
+            })
+        });
+
+        //Make an ajax call to load the categories
+        function loadList(categoryid) {
+            clearMessage();
+            $("#modelList").find('tbody').empty();
+            var url = '/api/Product/GetByUserId/?CategoryId=' + categoryid + '&CategoryName=AAA';
+            $.getJSON(url, function (data) {
+                $.each(data, function (i, product) {
+                    $('#modelList tbody').append("<tr><td>" + product.ProductId + "</td><td>" + product.ProductName + "</td><td>" + product.CategoryName + "</td><td>" + formatter.format(product.Price) + "</td><td>" + product.Image + "</td><td>" + product.Condition + "</td><td>" + product.Discount + "</td><td><span><a class='btn btn-success' href='javascript:editModel(\"" + product.ProductId + "\");'> Edit</a></span><span style='padding-left: 5px'><a class='btn btn-danger' href='javascript:deleteModel(\"" + product.ProductId + "\");'> Delete</a></span></td></tr>");
+                });
+            });
+        }
+
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2,
+        });
+
+        //Make an ajax call to delete a model object
+        function deleteModel(id) {
+            var result = confirm("Are you sure to delete?");
+            if (result) {
+                $.ajax({
+                    url: '/api/Product/' + id,
+                    type: 'DELETE',
+                    success: function (result) {
+                        loadList();
+                    },
+                    error: function (result) {
+                        alert("Unable to delete product. Error:" + result);
+                    }
+                });
+            }
+        }
+
+        function editModel(id) {
+            $.ajax({
+                url: '/api/Product/' + id,
+                type: 'GET',
+                success: function (result) {
+                    $('#EditModal').find('#ProductId').val(result.ProductId);
+                    $('#EditModal').find('#ProductName').val(result.ProductName);
+                    $('#EditModal').find('#CategoryId').val(result.CategoryId);
+                    $('#EditModal').find('#Price').val(result.Price);
+                    $('#EditModal').find('#Image').val(result.Image);
+                    $('#EditModal').find('#Condition').val(result.Condition);
+                    $('#EditModal').find('#Discount').val(result.Discount);
+                    $('#EditModal').modal('show');
+                },
+                error: function (result) {
+                    alert("Unable to edit category.")
+                }
+            });
+        }
+
+
+        function onSuccess(data) {
+            if (data == "Okay") {
+                $('#AddModal').modal('hide');
+                $('#EditModal').modal('hide');
+            } else {
+                clearMessage();
+                $('.text-danger ul').append("<li>" + data + "</li>")
+            }
+        }
+        function clearMessage() {
+            $(".text-danger").addClass("validation-summary-errors");
+            $(".text-danger").removeClass("validation-summary-valid");
+            $('.text-danger ul').children().remove();
+        }
+
+        function onFailure(data) {
+            alert('An error occurred, please try again.');
+            //alert('Error:' + data.responseText);
+        }
+    </script>
+}

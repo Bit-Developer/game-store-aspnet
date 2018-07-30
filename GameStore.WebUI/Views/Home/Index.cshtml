@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@Html.Partial("_FrontPartial")
+<div class="jumbotron">
+    <h1>Game Store</h1>
+    <p>Welcome to Johnny's Game Store! You can purchase consoles, accessories and games here. You can register as 'Regular' user to purchase products. Or, register as 'Advanced' user to sell your own products!</p>
+    <div class="row">
+        <div class="col-sm-2">@Html.ActionLink("Console", "Console", "Product")</div>
+        <div class="col-sm-2">@Html.ActionLink("Accessory", "Accessory", "Product")</div>
+        <div class="col-sm-2">@Html.ActionLink("Game", "Game", "Product")</div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4"></div>
+    </div>
+</div>
+
+<div class="panel-group">
+    <div class="panel panel-primary">
+        <div class="panel-body">Default User Account</div>
+    </div>
+    <div class="panel panel-default">
+        <ul class="list-group">
+            <li class="list-group-item">admin@gamestore.com / admin</li>
+            <li class="list-group-item">advanced@gamestore.com / advanced</li>
+            <li class="list-group-item">regular@gamestore.com / regular</li>
+        </ul>
+    </div>
+</div>
+
+
+
