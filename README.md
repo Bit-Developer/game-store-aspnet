@@ -9,7 +9,7 @@ An online eCommerce web store, built with ASP.NET MVC in C#.
 <kbd>![image](/public/games.png)</kbd>
 
 # Demo
-The [Live Demo](http://ect583final.azurewebsites.net/) is hosted by Microsoft Azure.
+The [Live Demo](https://ect583final.azurewebsites.net/) is hosted by Microsoft Azure.
 
 # Setup Locally
 ```bash
@@ -18,4 +18,4 @@ git clone https://github.com/jojozhuang/game-store-aspnet.git
 On Windows, open the project in Visual Studio, compile and run. Access http://localhost:5000/ in web browser, enjoy!
 
 # Portfolio
-Read portfolio [Online Game Store(ASP.NET)](http://jojozhuang.github.io/portfolio/game-store-aspnet/) to learn the main functions of this online store application.
+Read portfolio [Online Game Store(ASP.NET)](https://jojozhuang.github.io/portfolio/game-store-aspnet/) to learn the main functions of this online store application.
