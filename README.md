@@ -1,15 +1,39 @@
 # Game Store
 An online eCommerce web store, built with ASP.NET MVC in C#.
 
-# Function
-* Pages: Home, Consoles, Accessories, Games
-* General Functions: View Product, Search Product
-* Membership: Register, Login, Logout
-
 <kbd>![image](/public/games.png)</kbd>
 
+# Function
+* Membership: Regular User, Advanced User, Admin User.
+* User Authentication - Register, Login, User Profile, Reset Password, etc.
+* Product Management - Create, Update, Delete product.
+* User Management - Create, Update, Delete user.
+* Procure System - Shopping Cart, Order, Payment, Shipping.
+* General Functions - View Product, Search Product
+
+# Technology
+The used frameworks and libraries for this app are listed below.
+* C#, ASP.NET MVC, WebAPI
+* Entity Framework (Code First)
+* SQL Server for persistence
+* Bootstrap, jQuery
+* Ninject for Dependency Injection
+* ASP.Net Identity: User and Role, Admin Area
+* Authentication and Authorization
+* Third-party Payment Gateway
+* Cache: Output Caching, ASP.NET Cache
+* Azure Deployment
+
 # Demo
-The [Live Demo](https://ect583final.azurewebsites.net/) is hosted by Microsoft Azure.
+One available demo:
+* `Live Demo on Azure:` <a href="https://ect583final.azurewebsites.net/" target="\_blank">https://ect583final.azurewebsites.net/</a>
+
+*Note: The demo website may be slow when you access them for the first time. Be patient!*
+
+Try it out on Azure with the following accounts:
+* admin@gamestore.com / admin
+* advanced@gamestore.com / advanced
+* regular@gamestore.com / regular
 
 # Setup Locally
 ```bash
