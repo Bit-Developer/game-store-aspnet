@@ -4,15 +4,17 @@ An online eCommerce web store, built with ASP.NET MVC in C#.
 <kbd>![image](/public/games.png)</kbd>
 
 # Function
+Here are the available features.
 * Membership: Regular User, Advanced User, Admin User.
-* User Authentication - Register, Login, User Profile, Reset Password, etc.
+* User Authentication - Register, Login, User Profile, Reset Password, Role, etc.
 * Product Management - Create, Update, Delete product.
 * User Management - Create, Update, Delete user.
 * Procure System - Shopping Cart, Order, Payment, Shipping.
-* General Functions - View Product, Search Product
+* Website Management - Dashboard.
+* General Function - Product Search.
 
 # Technology
-The used frameworks and libraries for this app are listed below.
+The frameworks and libraries used for this app are listed below.
 * C#, ASP.NET MVC, WebAPI
 * Entity Framework (Code First)
 * SQL Server for persistence
